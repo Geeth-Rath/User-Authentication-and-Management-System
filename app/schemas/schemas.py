@@ -8,10 +8,21 @@ class UserBase(BaseModel):
 class UserCreate(UserBase):
     password: str
 
-class UserResponse(UserBase):
+class UserResponse(BaseModel):
+    id: int
+    username: str
+    email: str
+    hashed_password:str
     createdAt: datetime
-    
+
     class Config:
         orm_mode = True
+
+
+class UserUpdate(BaseModel):
+    username: str | None = None
+    email: str | None = None
+    password: str | None = None
+
 
 
