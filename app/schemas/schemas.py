@@ -2,16 +2,17 @@ from pydantic import BaseModel, EmailStr, constr, field_validator
 from datetime import datetime
 import re
 
+
 class UserBase(BaseModel):
     username: constr(min_length=3)
     email: EmailStr
+
 
 class UserCreate(UserBase):
     password: str
 
     @field_validator('password')
     def validate_password(cls, value):
-
         pattern = r'^(?=.*?[A-Z])(?=.*?[a-z])(?=.*?[0-9])(?=.*?[#?!@$%^&*-]).{8,}$'
 
         if not re.match(pattern, value):
@@ -19,6 +20,7 @@ class UserCreate(UserBase):
                 "Password must be at least 8 characters long, contain at least one uppercase letter, one lowercase letter, one digit, and one special character."
             )
         return value
+
 
 class UserResponse(BaseModel):
     id: int
@@ -29,6 +31,7 @@ class UserResponse(BaseModel):
 
     class Config:
         orm_mode = True
+
 
 class UserUpdate(BaseModel):
     username: constr(min_length=3) | None = None
